@@ -2,17 +2,37 @@ services:
   - type: web
     name: playnetmdh-api
     env: docker
+    plan: free
     dockerfilePath: ./Dockerfile
     dockerCommand: uvicorn backend.api.main:app --host 0.0.0.0 --port 10000
     healthCheckPath: /health
+    envVars:
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: CHANNEL_HANDLE
+        value: "@Playnetmdh"
+
   - type: web
     name: playnetmdh-dashboard
     env: docker
+    plan: free
     dockerfilePath: ./Dockerfile
     dockerCommand: streamlit run frontend/dashboard/app.py --server.port 10000 --server.address 0.0.0.0
+    envVars:
+      - key: YOUTUBE_API_KEY
+        sync: false
+
   - type: redis
     name: playnet-redis
     plan: free
+    maxmemoryPolicy: noeviction
+    ipAllowList: []
+
 databases:
   - name: playnet-db
     plan: free
+    ipAllowList: []
