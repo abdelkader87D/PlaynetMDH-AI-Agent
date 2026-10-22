@@ -1,0 +1,6 @@
+.env
+youtube_agent.db
+__pycache__/
+.venv/
+data/
+*.log
